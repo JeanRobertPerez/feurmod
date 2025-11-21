@@ -1,5 +1,6 @@
 package com.mod;
 
+import com.mod.registries.RegisterEntities;
 import net.fabricmc.api.ModInitializer;
 
 import java.util.UUID;
@@ -25,6 +26,7 @@ public class FeurMod implements ModInitializer {
 	public void onInitialize() 
 	{
 		RegisterItems.initialize();
+		RegisterEntities.initialize();
 		CommonEvents.register();
 		LOGGER.info("putain t moch !");
 	}

@@ -22,7 +22,6 @@ public class CommonEvents
 			if(entity instanceof PlayerEntity)
 			{
 				PlayerEntity player = (PlayerEntity) entity;
-				System.out.print(player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_SPEED).getBaseValue() + "\n");
 				if(player.getMainHandStack().getItem() instanceof AxeItem)
 				{
 					player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_SPEED).setBaseValue(FeurMod.AXE_ATT_SPEED);
