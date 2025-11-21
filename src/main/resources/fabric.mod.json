@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "feurmod",
+	"version": "0.1b",
+	"name": "Feur Mod",
+	"description": "Joue pas avec ce truc stp frr!",
+	"authors": [
+		"JeanRobertPerez alias le cringeur originel"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/feurmod/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.mod.FeurMod"
+		],
+		"client": [
+			"com.mod.FeurModClient"
+		],
+		"fabric-datagen": [
+			"com.mod.FeurModDataGenerator"
+		]
+	},
+	"mixins": [
+		"feur-mod.mixins.json",
+		{
+			"config": "feur-mod.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
