@@ -8,6 +8,7 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -55,7 +56,12 @@ public class GrenadeEntity extends Entity
 
 		this.move(MovementType.SELF, this.getVelocity());
 		this.addVelocity(new Vec3d(0, -0.04, 0));
-		this.boing();
+		if(!this.getWorld().isClient)
+		{
+			this.boing();
+		}
+
+		this.setVelocity(this.getVelocity().multiply(1.0, 0.98, 1.0));
 	}
 
 	public void onLanding()
@@ -74,34 +80,30 @@ public class GrenadeEntity extends Entity
 		Box box = new Box(vec.x - this.getWidth() / 2, vec.y, vec.z - this.getWidth() / 2, vec.x + this.getWidth() / 2, vec.y + this.getHeight(), vec.z + this.getWidth() / 2);
 		if(Utils.checkBlockCollisionAdv(box, this.getWorld()))
 		{
-			System.out.print("boing\n");
-			this.setVelocity(this.getVelocity().add(0, 2,0));
-
 			Vec3d vecTest = this.getPos().add(-this.getVelocity().x, this.getVelocity().y, this.getVelocity().z);
-			Box boxTest = new Box(vecTest.x - this.getWidth() / 2, vec.y, vecTest.z - this.getWidth() / 2, vecTest.x + this.getWidth() / 2, vecTest.y + this.getHeight(), vecTest.z + this.getWidth() / 2);
+			Box boxTest = new Box(vecTest.x - this.getWidth() / 2, vecTest.y, vecTest.z - this.getWidth() / 2, vecTest.x + this.getWidth() / 2, vecTest.y + this.getHeight(), vecTest.z + this.getWidth() / 2);
 
 			if(!Utils.checkBlockCollisionAdv(boxTest, this.getWorld()))
 			{
-				this.getVelocity().multiply(-0.9, 1.0, 1.0);
+				this.setVelocity(this.getVelocity().multiply(-0.9, 1.0, 1.0));
 				this.rebondi += 1;
 			}
 
-			vecTest = this.getPos().add(this.getVelocity().x, -this.prevMotionY, this.getVelocity().z);
-			boxTest = new Box(vecTest.x - this.getWidth() / 2, vec.y, vecTest.z - this.getWidth() / 2, vecTest.x + this.getWidth() / 2, vecTest.y + this.getHeight(), vecTest.z + this.getWidth() / 2);
+			vecTest = this.getPos().add(0, -this.getVelocity().y * 2, 0);
+			boxTest = new Box(vecTest.x - this.getWidth() / 2, vecTest.y, vecTest.z - this.getWidth() / 2, vecTest.x + this.getWidth() / 2, vecTest.y + this.getHeight(), vecTest.z + this.getWidth() / 2);
 
-			if(!Utils.checkBlockCollisionAdv(boxTest, this.getWorld()))
+			if(!Utils.checkBlockCollisionAdv(boxTest, this.getWorld()) && !this.isOnGround() && MathHelper.abs((float)this.getVelocity().y) > 0.1F)
 			{
-				System.out.print("boing\n");
-				this.getVelocity().multiply(1.0, -1.0, 1.0);
+				this.setVelocity(this.getVelocity().multiply(1.0, -0.9, 1.0));
 				this.rebondi += 1;
 			}
 
 			vecTest = this.getPos().add(this.getVelocity().x, this.getVelocity().y, -this.getVelocity().z);
-			boxTest = new Box(vecTest.x - this.getWidth() / 2, vec.y, vecTest.z - this.getWidth() / 2, vecTest.x + this.getWidth() / 2, vecTest.y + this.getHeight(), vecTest.z + this.getWidth() / 2);
+			boxTest = new Box(vecTest.x - this.getWidth() / 2, vecTest.y, vecTest.z - this.getWidth() / 2, vecTest.x + this.getWidth() / 2, vecTest.y + this.getHeight(), vecTest.z + this.getWidth() / 2);
 
 			if(!Utils.checkBlockCollisionAdv(boxTest, this.getWorld()) && !this.isOnGround())
 			{
-				this.getVelocity().multiply(1.0, 1.0, -0.9);
+				this.setVelocity(this.getVelocity().multiply(1.0, 1.0, -0.9));
 				this.rebondi += 1;
 			}
 		}
