@@ -85,7 +85,7 @@ public class GrenadeEntity extends Entity
 
 			if(!Utils.checkBlockCollisionAdv(boxTest, this.getWorld()))
 			{
-				this.setVelocity(this.getVelocity().multiply(-0.9, 1.0, 1.0));
+				this.setVelocity(this.getVelocity().multiply(-0.8, 1.0, 1.0));
 				this.rebondi += 1;
 			}
 
@@ -94,7 +94,7 @@ public class GrenadeEntity extends Entity
 
 			if(!Utils.checkBlockCollisionAdv(boxTest, this.getWorld()) && !this.isOnGround() && MathHelper.abs((float)this.getVelocity().y) > 0.1F)
 			{
-				this.setVelocity(this.getVelocity().multiply(1.0, -0.9, 1.0));
+				this.setVelocity(this.getVelocity().multiply(1.0, -0.8, 1.0));
 				this.rebondi += 1;
 			}
 
@@ -103,7 +103,7 @@ public class GrenadeEntity extends Entity
 
 			if(!Utils.checkBlockCollisionAdv(boxTest, this.getWorld()) && !this.isOnGround())
 			{
-				this.setVelocity(this.getVelocity().multiply(1.0, 1.0, -0.9));
+				this.setVelocity(this.getVelocity().multiply(1.0, 1.0, -0.8));
 				this.rebondi += 1;
 			}
 		}
