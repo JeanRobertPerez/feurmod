@@ -5,6 +5,7 @@ import net.fabricmc.api.ModInitializer;
 
 import java.util.UUID;
 
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,6 +1,7 @@
 package com.mod.rendermobs;
 
 import com.mod.entity.GrenadeEntity;
+import com.mod.registries.RegisterItems;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -33,7 +34,7 @@ public class GrenadeEntityRender extends EntityRenderer<GrenadeEntity>
 
     public void render(GrenadeEntity tntEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         matrixStack.push();
-        ItemStack itemStack = new ItemStack(Items.DIAMOND);
+        ItemStack itemStack = new ItemStack(RegisterItems.GRENADE);
         int j = itemStack.isEmpty() ? 187 : Item.getRawId(itemStack.getItem()) + itemStack.getDamage();
         BakedModel bakedModel = this.itemRenderer.getModel(itemStack, tntEntity.getWorld(), (LivingEntity)null, tntEntity.getId());
         boolean bl = bakedModel.hasDepth();
