@@ -28,7 +28,7 @@ public class ItemGrenade extends Item
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand)
     {
         GrenadeEntity entity = new GrenadeEntity(RegisterEntities.GRENADE, world);
-        entity.throwGrenade(user);
+        entity.throwGrenade(user, 0.8F);
         if(!world.isClient())
         {
             world.spawnEntity(entity);

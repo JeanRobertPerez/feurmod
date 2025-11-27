@@ -1,6 +1,9 @@
 package com.mod.entity;
 
+import com.mod.networking.NetworkingConstants;
 import com.mod.utils.Utils;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -13,9 +16,11 @@ import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.Explosion;
+import org.joml.Vector3f;
 
 import java.util.Random;
 
@@ -67,6 +73,7 @@ public class GrenadeEntity extends Entity
 	{
 		this.dataTracker.set(USER_ID, nbt.getInt("userId"));
 		this.dataTracker.set(REBONDI, nbt.getInt("rebondi"));
+		this.damageMultiplier = nbt.getFloat("damageMultiplier");
 	}
 
 	@Override
@@ -74,6 +81,7 @@ public class GrenadeEntity extends Entity
 	{
 		nbt.putInt("userId", this.dataTracker.get(USER_ID));
 		nbt.putInt("rebondi", this.dataTracker.get(REBONDI));
+		nbt.putFloat("damageMultiplier", this.damageMultiplier);
 	}
 
 	public int getMaxExistTicks()
@@ -97,7 +105,7 @@ public class GrenadeEntity extends Entity
 
 		if(this.isOnGround())
 		{
-			this.setVelocity(this.getVelocity().multiply(0.6, 0.6, 0.6));
+			this.setVelocity(this.getVelocity().multiply(0.7, 1, 0.7));
 		}
 
 		this.move(MovementType.SELF, this.getVelocity());
@@ -129,21 +137,25 @@ public class GrenadeEntity extends Entity
     {
 		if(!this.getWorld().isClient)
 		{
-			this.getWorld().playSound((PlayerEntity) null,this.getPos().x,this.getPos().y,this.getPos().z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 2.0F, 1.0F, 0L);
-			Random rand = new Random();
-			for(int i = 0; i < 10; ++i)
-			{
-				this.getWorld().addParticle(ParticleTypes.FLAME, true, this.getPos().x, this.getPos().y + 0.1F, this.getPos().z, (rand.nextFloat() - 0.5F) * 2, (rand.nextFloat() - 0.5F) * 2, (rand.nextFloat() - 0.5F) * 2);
-				this.getWorld().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, true, this.getPos().x, this.getPos().y + 0.1F, this.getPos().z, (rand.nextFloat() - 0.5F) * 2, (rand.nextFloat() - 0.5F) * 2, (rand.nextFloat() - 0.5F) * 2);
-			}
+			this.getWorld().playSound((PlayerEntity) null,this.getPos().x, this.getPos().y, this.getPos().z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.AMBIENT, 2.0F, 1.0F, 0L);
 
-			if(!this.getWorld().isClient)
+			PacketByteBuf buf = PacketByteBufs.create();
+			buf.writeInt(0);
+			buf.writeVector3f(new Vector3f((float)this.getPos().getX(), (float)this.getPos().getY(), (float)this.getPos().getZ()));
+
+			for(PlayerEntity entity : this.getWorld().getPlayers())
 			{
-				for(Entity entity : this.getWorld().getOtherEntities(this, new Box(this.getPos().x - 3, this.getPos().y - 3, this.getPos().z - 3, this.getPos().x + 3, this.getPos().y + 3, this.getPos().z + 3)))
+				if(entity instanceof ServerPlayerEntity)
 				{
-					entity.damage(this.getWorld().getDamageSources().explosion(this, this.getUser()), 10.0F);
+					ServerPlayNetworking.send((ServerPlayerEntity) entity, NetworkingConstants.BASIC_PARTICLES_MESSAGE, buf);
 				}
 			}
+
+			for(Entity entity : this.getWorld().getOtherEntities(this, new Box(this.getPos().x - 3, this.getPos().y - 3, this.getPos().z - 3, this.getPos().x + 3, this.getPos().y + 3, this.getPos().z + 3)))
+			{
+				entity.damage(this.getWorld().getDamageSources().explosion(this, this.getUser()), 10.0F * this.damageMultiplier);
+			}
+
 			this.discard();
 		}
     }
@@ -165,10 +177,10 @@ public class GrenadeEntity extends Entity
 		return null;
 	}
 
-    public void throwGrenade(Entity user)
+    public void throwGrenade(Entity user, float power)
     {
         this.setPosition(user.getEyePos());
-        this.setVelocity(user.getRotationVec(1.0F).multiply(0.8F));
+        this.setVelocity(user.getRotationVec(1.0F).multiply(power));
 		this.dataTracker.set(USER_ID, user.getId());
     }
 
@@ -195,7 +207,7 @@ public class GrenadeEntity extends Entity
 			{
 				if(MathHelper.abs((float)this.getVelocity().y) > 0.1F)
 				{
-					this.setVelocity(this.getVelocity().multiply(0.98, -0.5, 0.98));
+					this.setVelocity(this.getVelocity().multiply(0.6, -0.5, 0.6));
 					this.setRebondi(this.getRebondi() + 1);
 				}
 			}
