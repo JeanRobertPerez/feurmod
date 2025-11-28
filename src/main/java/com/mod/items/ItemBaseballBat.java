@@ -64,7 +64,7 @@ public class ItemBaseballBat extends Item implements ISpecialLeftClickItem
 
 				Vec3d vecPosRel = grenade.getPos().subtract(player.getEyePos());
 				double dot = player.getRotationVector().dotProduct(vecPosRel.normalize());
-				if(Math.abs(dot) >= 0.85)
+				if(dot >= 0.85)
 				{
 					grenade.damageMultiplier += 0.5F;
 					grenade.ticks = 0;
