@@ -1,6 +1,7 @@
 package com.mod.registries;
 
 import com.mod.FeurMod;
+import com.mod.entity.GrappleEntity;
 import com.mod.entity.GrenadeEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -14,6 +15,12 @@ public class RegisterEntities
             Registries.ENTITY_TYPE,
             Identifier.of(FeurMod.MOD_ID, "grenade"),
             EntityType.Builder.create(GrenadeEntity::new, SpawnGroup.MISC).setDimensions(0.3f, 0.3f).build("grenade")
+    );
+
+    public static final EntityType<GrappleEntity> GRAPPLE = Registry.register(
+            Registries.ENTITY_TYPE,
+            Identifier.of(FeurMod.MOD_ID, "grapple"),
+            EntityType.Builder.create(GrappleEntity::new, SpawnGroup.MISC).setDimensions(0.3f, 0.3f).build("grapple")
     );
 
     public static void initialize()

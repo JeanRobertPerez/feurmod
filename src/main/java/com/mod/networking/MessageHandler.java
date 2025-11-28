@@ -31,7 +31,7 @@ public class MessageHandler {
                     ISpecialLeftClickItem item = (ISpecialLeftClickItem) player.getMainHandStack().getItem();
                     if(release)
                     {
-                        item.release(player, player.getMainHandStack(), player.getWorld(), ticks);
+                        item.releaseLeftClick(player, player.getMainHandStack(), player.getWorld(), ticks);
                     }
                     else
                     {

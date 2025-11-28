@@ -74,8 +74,8 @@ public class ClientEvents
                     }
                     else if(leftClickticksPressed > 0)
                     {
-                        item.releaseClient(client.player, player.getMainHandStack(), client.world, leftClickticksPressed);
-                        item.release(client.player, player.getMainHandStack(), client.world, leftClickticksPressed);
+                        item.releaseLeftClickClient(client.player, player.getMainHandStack(), client.world, leftClickticksPressed);
+                        item.releaseLeftClick(client.player, player.getMainHandStack(), client.world, leftClickticksPressed);
 
                         PacketByteBuf buf = PacketByteBufs.create();
                         buf.writeInt(leftClickticksPressed);

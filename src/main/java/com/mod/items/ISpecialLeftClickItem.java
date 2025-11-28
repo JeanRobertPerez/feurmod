@@ -13,12 +13,12 @@ public interface ISpecialLeftClickItem
 
     public void leftClick(PlayerEntity player, ItemStack stack, World world, int ticks);
 
-    public default void release(PlayerEntity player, ItemStack stack, World world, int ticks)
+    public default void releaseLeftClick(PlayerEntity player, ItemStack stack, World world, int ticks)
     {
 
     }
 
-    public default void releaseClient(PlayerEntity player, ItemStack stack, World world, int ticks)
+    public default void releaseLeftClickClient(PlayerEntity player, ItemStack stack, World world, int ticks)
     {
 
     }

@@ -3,6 +3,7 @@ package com.mod;
 import com.mod.events.ClientEvents;
 import com.mod.networking.NetworkingConstants;
 import com.mod.registries.RegisterEntities;
+import com.mod.rendermobs.GrappleEntityRender;
 import com.mod.rendermobs.GrenadeEntityRender;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -30,6 +31,10 @@ public class FeurModClient implements ClientModInitializer
 
 		INSTANCE.register(RegisterEntities.GRENADE, (context) -> {
             return new GrenadeEntityRender(context);
+		});
+
+		INSTANCE.register(RegisterEntities.GRAPPLE, (context) -> {
+			return new GrappleEntityRender(context);
 		});
 
 		ClientPlayNetworking.registerGlobalReceiver(NetworkingConstants.BASIC_PARTICLES_MESSAGE, (client, handler, buf, responseSender) -> {
