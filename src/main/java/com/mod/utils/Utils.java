@@ -1,5 +1,6 @@
 package com.mod.utils;
 
+import com.mod.items.ItemGun;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -8,6 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -16,13 +18,17 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
+import java.util.Optional;
 import java.util.Random;
 
 public class Utils
@@ -172,5 +178,49 @@ public class Utils
         double j = MathHelper.cos((float) f);
         double k = MathHelper.sin((float) f);
         return new Vec3d(range * i * j,-range * k, range * h * j);
+    }
+
+    public static void shootClient(LivingEntity entityLiving, World world, float rotationPitch, float rotationYaw, ItemStack stack)
+    {
+        if(stack.getItem() instanceof ItemGun)
+        {
+            ItemGun item = (ItemGun) stack.getItem();
+            Vec3d vec = Utils.lookVecWithInaccuracy(rotationPitch, rotationYaw, item.inaccuracy(), item.range());
+
+            Vec3d vec1 = entityLiving.getEyePos();
+            Vec3d vec2 = entityLiving.getEyePos().add(vec);
+
+            Box box = new Box(vec1, vec2);
+            Entity target = null;
+            for(Entity entity : world.getOtherEntities(entityLiving, box))
+            {
+                Optional<Vec3d> optionalVec3d =  entity.getBoundingBox().raycast(vec1, vec2);
+                if(!optionalVec3d.isEmpty())
+                {
+                    Vec3d vec3 = optionalVec3d.get();
+                    RaycastContext rayCon = new RaycastContext(vec1, vec3, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, entityLiving);
+                    BlockHitResult blockHitResult = world.raycast(rayCon);
+
+                    if(blockHitResult.getType() == HitResult.Type.BLOCK)
+                    {
+                        item.onHitBlock(world, stack, blockHitResult.getBlockPos());
+                    }
+                    else if(blockHitResult.getType() == HitResult.Type.MISS)
+                    {
+                        item.onHitEntity(1, entityLiving, entity, world, stack);
+                    }
+                }
+                else
+                {
+                    RaycastContext rayCon = new RaycastContext(vec1, vec2, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, entityLiving);
+                    BlockHitResult blockHitResult = world.raycast(rayCon);
+
+                    if(blockHitResult.getType() == HitResult.Type.BLOCK)
+                    {
+                        item.onHitBlock(world, stack, blockHitResult.getBlockPos());
+                    }
+                }
+            }
+        }
     }
 }
