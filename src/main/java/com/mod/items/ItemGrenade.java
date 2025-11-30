@@ -33,6 +33,8 @@ public class ItemGrenade extends Item
         {
             world.spawnEntity(entity);
         }
+        user.getItemCooldownManager().set(this, 30);
+        user.getStackInHand(hand).decrement(1);
         return TypedActionResult.pass(user.getStackInHand(hand));
     }
 }

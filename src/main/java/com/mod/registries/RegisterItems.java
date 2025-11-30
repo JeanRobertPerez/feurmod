@@ -16,9 +16,9 @@ import net.minecraft.util.Identifier;
 
 public class RegisterItems {
 
-	public static final Item BASEBALL_BAT = register("baseball_bat", ItemBaseballBat::new, new Item.Settings());
-	public static final Item GRENADE = register("grenade", ItemGrenade::new, new Item.Settings());
-	public static final Item GRAPPLE = register("grapple", ItemGrapple::new, new Item.Settings());
+	public static final Item BASEBALL_BAT = register("baseball_bat", ItemBaseballBat::new, new Item.Settings().maxCount(1));
+	public static final Item GRENADE = register("grenade", ItemGrenade::new, new Item.Settings().maxCount(8));
+	public static final Item GRAPPLE = register("grapple", ItemGrapple::new, new Item.Settings().maxCount(1));
 
 	public static void initialize() 
 	{

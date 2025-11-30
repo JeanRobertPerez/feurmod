@@ -106,6 +106,10 @@ public class GrappleEntity extends Entity
             {
                 attractVec = attractVec.normalize();
                 this.getUser().addVelocity(attractVec.multiply(-0.2));
+                if(this.getUser().getVelocity().y > 0)
+                {
+                    this.getUser().fallDistance = 0;
+                }
             }
         }
         else

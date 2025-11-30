@@ -18,7 +18,7 @@ public class ItemGrapple extends Item implements ISpecialLeftClickItem, IRightCl
     public ItemGrapple(Settings settings)
     {
         super(settings);
-        settings.maxCount(16).maxDamage(0);
+        settings.maxCount(1).maxDamage(0);
     }
 
     @Override

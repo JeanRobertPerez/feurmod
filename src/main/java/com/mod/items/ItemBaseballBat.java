@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 
 import com.mod.entity.GrenadeEntity;
+import com.mod.registries.FDamageSource;
+import com.mod.utils.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;

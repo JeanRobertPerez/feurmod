@@ -1,6 +1,7 @@
 package com.mod;
 
 import com.mod.networking.MessageHandler;
+import com.mod.registries.FDamageSource;
 import com.mod.registries.RegisterEntities;
 import net.fabricmc.api.ModInitializer;
 
@@ -30,6 +31,7 @@ public class FeurMod implements ModInitializer {
 		RegisterItems.initialize();
 		RegisterEntities.initialize();
 		CommonEvents.register();
+		FDamageSource.registerDamageTypes();
 		MessageHandler.registerHandlers();
 		LOGGER.info("putain t moch !");
 	}

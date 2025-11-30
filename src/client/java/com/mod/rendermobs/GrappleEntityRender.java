@@ -76,7 +76,6 @@ public class GrappleEntityRender extends EntityRenderer<GrappleEntity>
                 int j = 8;
                 float k = 0.0F;
                 float l = 0.75F;
-                float m = 0.0F;
                 MatrixStack.Entry entry = matrixStack.peek();
                 Matrix4f matrix4f = entry.getPositionMatrix();
                 Matrix3f matrix3f = entry.getNormalMatrix();
@@ -86,11 +85,37 @@ public class GrappleEntityRender extends EntityRenderer<GrappleEntity>
                     float o = MathHelper.sin((float)n * ((float)Math.PI * 2F) / 4.0F) * 0.75F;
                     float p = MathHelper.cos((float)n * ((float)Math.PI * 2F) / 4.0F) * 0.75F;
                     float q = (float)n / 4.0F;
-                    vertexConsumer.vertex(matrix4f, k * 0.02F, l * 0.02F, 0.0F).color(255, 255, 255, 255).texture(m, h).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-                    vertexConsumer.vertex(matrix4f, k * 0.02F, l * 0.02F, g).color(255, 255, 255, 255).texture(m, i).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-                    vertexConsumer.vertex(matrix4f, o * 0.02F, p * 0.02F, g).color(255, 255, 255, 255).texture(q, i).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
-                    vertexConsumer.vertex(matrix4f, o * 0.02F, p * 0.02F, 0.0F).color(255, 255, 255, 255).texture(q, h).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+                    vertexConsumer.vertex(matrix4f, k * 0.02F, l * 0.02F, 0.0F).color(255, 255, 255, 255).texture(0,0).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+                    vertexConsumer.vertex(matrix4f, k * 0.02F, l * 0.02F, g).color(255, 255, 255, 255).texture(0,0).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+                    vertexConsumer.vertex(matrix4f, o * 0.02F, p * 0.02F, g).color(255, 255, 255, 255).texture(0,0).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+                    vertexConsumer.vertex(matrix4f, o * 0.02F, p * 0.02F, 0.0F).color(255, 255, 255, 255).texture(0,0).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
                 }
+
+
+                /* this test may be reused later in the developpement
+                for(int b = 0; b < 100; ++b)
+                {
+                    for(int m = 0; m < 50; ++m)
+                    {
+                        float l1 = MathHelper.sin((float)m * ((float)Math.PI * 2F) / 100.0F);
+                        float l2 = MathHelper.sin((float)(m + 1) * ((float)Math.PI * 2F) / 100.0F);
+
+                        float z1 = -MathHelper.cos((float)m * ((float)Math.PI * 2F) / 100.0F);
+                        float z2 = -MathHelper.cos((float)(m + 1) * ((float)Math.PI * 2F) / 100.0F);
+
+                        float x1 = MathHelper.cos((float)b * ((float)Math.PI * 2F) / 100.0F);
+                        float x2 = MathHelper.cos((float)(b + 1) * ((float)Math.PI * 2F) / 100.0F);
+
+                        float y1 = MathHelper.sin((float)b * ((float)Math.PI * 2F) / 100.0F);
+                        float y2 = MathHelper.sin((float)(b + 1) * ((float)Math.PI * 2F) / 100.0F);
+
+
+                        vertexConsumer.vertex(matrix4f, x1 * l1, y1 * l1, z1).color((x1 + 1) * 127, (y1 + 1) * 127, (z1 + 1) * 127, 100).texture(0,0).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+                        vertexConsumer.vertex(matrix4f, x2 * l1, y2 * l1, z1).color((x1 + 1) * 127, (y1 + 1) * 127, (z1 + 1) * 127, 100).texture(0,0).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+                        vertexConsumer.vertex(matrix4f, x2 * l2, y2 * l2, z2).color((x1 + 1) * 127, (y1 + 1) * 127, (z1 + 1) * 127, 100).texture(0,0).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+                        vertexConsumer.vertex(matrix4f, x1 * l2, y1 * l2, z2).color((x1 + 1) * 127, (y1 + 1) * 127, (z1 + 1) * 127, 100).texture(0,0).overlay(OverlayTexture.DEFAULT_UV).light(c).normal(matrix3f, 0.0F, -1.0F, 0.0F).next();
+                    }
+                }*/
 
                 matrixStack.pop();
             }
